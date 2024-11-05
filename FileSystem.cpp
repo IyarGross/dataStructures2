@@ -29,7 +29,7 @@ void FileSystem::printFileSystem() const {
 void FileSystem::printFileContent(const string& fileName) const {
     NodeRecord<string>* fileRecord = treeList.search(fileName);
     if (fileRecord && fileRecord->getType() == "File") {
-        File* file = (File *)fileRecord;
+        File* file = (File*)fileRecord;
         std::cout << file->getContent() << std::endl;
     }
     else {
@@ -55,6 +55,6 @@ void FileSystem::deleteSubstringFromFile(const string& fileName, const string& s
         file->deleteSubstring(substring);
     }
     else {
-        cerr << "File "<<fileName<<" not found or is not a file." << endl;
+        cerr << "File " << fileName << " not found or is not a file." << endl;
     }
 }

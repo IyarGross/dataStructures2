@@ -1,13 +1,12 @@
 #include "File.h"
-#include <iostream>
-#include <string>
-#include <algorithm>
 
-using namespace std;
-File::File(const string& name) : name(name), content("") {}///constructor
+File::File(const string& name) : name(name), content("") {}
 
-File::~File() {}///destructor
+File::~File() {}
+void File::appendContent(const string& newContent) {
+    content += newContent;
 
+}
 string File::getKey() const {
     return name;
 }
@@ -20,22 +19,17 @@ bool File::canHaveChildren() const {
     return false;
 }
 
-void File::appendContent(const string& newContent) {
-content += newContent;
 
-}///add content to the end of the file
-
-bool File::deleteSubstring(const string& toDelete) {
-    size_t position = content.find(toDelete);
-    if (position != std::string::npos) {
-        std::string modified = content;
-        modified.erase(position, toDelete.length());
-        content= modified;
+bool File::deleteSubstring(const string& toDelete) 
+{  
+    // מחיקת מחרוזת מתוכן הקובץ באמצעות למבדה
+    size_t pos = content.find(toDelete); // חיפוש המיקום של ההופעה הראשונה
+    if (pos != std::string::npos) {  // אם ההופעה נמצאה
+        content.erase(pos, toDelete.length());
         return true;
-    }
-return false;
-};
+    }// מחיקת ההופעה מהתווים
+    return false;
+ };
 
-string File::getContent() const {
-    return content;
-}
+
+

@@ -11,9 +11,9 @@ private:
     string content;//the content of the file
 
 public:
-   explicit  File(const string& name1);//constructor
-    ~File() ;
-    string getKey() const override ;
+    explicit  File(const string& name1);//constructor
+    ~File();
+    string getKey() const override;
     string getType() const override;
     string getContent() const;
 

@@ -5,7 +5,7 @@
 #include <list>
 #include <memory>
 #include <iostream>  // Include the necessary header for std::cout
-using namespace std;
+
 template <typename T>
 class MultiTreeNode {
 private:
@@ -14,44 +14,52 @@ private:
 
 public:
     list<MultiTreeNode<T>*>& getChildren() { return children; }
-    string getKey() const;
+    std::string getKey() const;
     NodeRecord<T>* getRecord() const;
     MultiTreeNode(NodeRecord<T>* record);
     bool addChild(NodeRecord<T>* newRecord);
     bool removeChild(const T& key);
     void print() const;
+ //   void deleteAllSubTree(NodeRecord<T>* record);
+ //   bool isLeaf() { return childe.isempty(); }
     ~MultiTreeNode();
-    void deleteAllSubTree(MultiTreeNode<T> *t);
 };
 // Implementation
 template <typename T>
 MultiTreeNode<T>::MultiTreeNode(NodeRecord<T>* record) : record(record) {}
-//constructor
+
 template <typename T>
-bool MultiTreeNode<T>::addChild(NodeRecord<T>* childRecord) {
-    if (record()->canHaveChildren())///check if can have children
-    {
+bool MultiTreeNode<T>::addChild(NodeRecord<T>* childRecord)
+{
+    if (record->canHaveChildren())///check if can have children
+      {
         children.push_back(new MultiTreeNode<T>(childRecord));
-        return true;
-    }///if can, push to the children list a new child with the key of rhe record given
+         return true;
+      }///if can, push to the children list a new child with the key of rhe record given
     return false;//if cant add child return false
-}//adds record to the children
-
+}
 
 template <typename T>
-bool MultiTreeNode<T>::removeChild(const T& key) {
-    auto it = this->children.begin();
-    for (; it != this->children.end(); it++) {//go over children with it
-        if(*it.getKey()==key) {//if the child key= to the key given
-            it.deleteAllSubTrees();//delete the node
+bool MultiTreeNode<T>::removeChild(const T& key)
+{
+   
+    for (auto it = children.begin(); it != children.end(); ++it)
+    {
+        if ((*it)->key == key)
+        {
+            delete* it; // שחרור הזיכרון
+            children.erase(it); // הסרת הבן מרשימת הבנים
             return true;
         }
-    }
-    return false;//if didnt delete/found
-}//delete a child if exsist
+        if ((*it)->removeChild(key))
+            return true;
+        return false;
+    } 
+}
 
 template <typename T>
 NodeRecord<T>* MultiTreeNode<T>::getRecord() const {
+    // TODO: complete
     return record;
 }
 
@@ -62,28 +70,38 @@ std::string MultiTreeNode<T>::getKey() const {
 
 template <typename T>
 void MultiTreeNode<T>::print() const {
-    cout<<this->getRecord()->getKey();
-}//print the key of this record
+    cout << record->getKey() << endl;
+}
 
 template <typename T>
 MultiTreeNode<T>::~MultiTreeNode() {
-    this->deleteAllSubTree();
+    for (auto iter = children.begin(); iter != children.end(); iter++)
+        delete* iter;
+    delete record;
 }
 
-// for( auto it = children.begin(); it != children.end();it++) {
+//    deleteAllSubTree(record);
+//    delede record;
+//}
+//template <typename T>
+//void MultiTreeNode<T>::deleteAllSubTree(NodeRecord<T>* t)
+//{
+//    if (!t->isLeaf())
+//    {
+//        if (!t->isLeaf())
+//        {
+//            // ניגש לכל ילד של t באמצעות לולאת for רגילה
+//            for (size_t i = 0; i < t->children.size(); ++i) {
+//                NodeRecord<T>* node = t->children[i];
+//                deleteAllSubTree(node);  // קריאה רקורסיבית למחיקת תת-העץ של הילד
+//            }
+//       /* for (NodeRecord<T>* node : t->cildren) {
+//            deleteAllSubTree(node);
+//            node->isLeaf() = true;*/
+//        }
+//        delete t;
+//    }
+//}
 
-template <typename T>
- void MultiTreeNode<T>::deleteAllSubTree(MultiTreeNode<T> *t) {
-    if (t == nullptr) return;
-    // if (t->isLeaf) delete t;
-    for (auto it = t->children.begin(); it != t->children.end(); it++)
-        deleteAllSubTree(*it);
-    delete t;
-    // if(children.isempty())
-    //     delete record;
-    // auto it = this->children.begin();
-    // for (; it != this->children.end(); it++) {
-    //     it->children->~MultiTreeNode();
-    // };
-}
+
 #endif  // MULTITREENODE_H

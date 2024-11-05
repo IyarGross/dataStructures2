@@ -7,52 +7,93 @@
 template <typename T>
 class MultiTree {
 private:
-    MultiTreeNode<T>* root;//root, a node from type t
+    MultiTreeNode<T>* root;
 
 public:
-    MultiTree(NodeRecord<T>* rootRecord);//constructor
-    ~MultiTree();//distructor
+    MultiTree(NodeRecord<T>* rootRecord);
+    ~MultiTree();
     T getRootKey() { return root->getKey(); }
-    NodeRecord<T>* searchRecord(const T& key);//
+    NodeRecord<T>* searchRecord(const T& key);
+    NodeRecord<T>* searchChild(MultiTreeNode<T>*child,const T & key);
     bool addRecord(const T& parentKey, NodeRecord<T>* record);
     bool removeRecord(const T& key);
-    void print(MultiTreeNode<T>* current,int level) const;
+    void print() const;
+    void print(MultiTreeNode<T>* current, int level) const;
 };
 
 // Implementation
+template <typename T>
+MultiTree<T>::MultiTree(NodeRecord<T>* rootRecord) : root(new MultiTreeNode<T>(rootRecord)) {}
 
 template <typename T>
 MultiTree<T>::~MultiTree() {
-    // TODO: complete
+    if (root != nullptr)
+    {
+        delete root;
+        root = nullptr;
+    }
+
 }
 
 template <typename T>
 bool MultiTree<T>::addRecord(const T& parentKey, NodeRecord<T>* record) {
     // TODO: complete
+    auto it = searchRecord(parentKey);//אם לא טוב לחפש רק בשורוש כמו ילין
+    if(it==nullptr)
     return false;
+    it.addChild(record);
+    return true;
 }
-
 
 template <typename T>
 bool MultiTree<T>::removeRecord(const T& key) {
     // TODO: complete
-    return false;
+    auto it = searchRecord(key);
+    if (it == nullptr||it==root)
+        return false;
+    delete it;
+    return true;
+  
 }
 
 
 template <typename T>
 NodeRecord<T>* MultiTree<T>::searchRecord(const T& key) {
-    // TODO: complete
-    return nullptr;  // Return nullptr if not found
+    
+    if (root->getKey == key)
+        return root->getRecord(); 
+      return searchChild(root, key);
+      return nullptr;
 }
+
+template <typename T>
+NodeRecord<T>* MultiTree<T>::searchChild(MultiTreeNode<T>* child, const T& key)
+{
+    
+    if ( child.getRecord() == key)
+        return child.getRecord();
+    for (auto it = child->getChildren().begin(); it != child->getChildren().end(); it++)
+        searchChild(it, key);
+    return nullptr;
+}
+
+template <typename T>
+void MultiTree<T>::print() const {
+    print(root, 0);
+}
+
 
 
 template <typename T>
-void MultiTree<T>::print(MultiTreeNode<T>* current,int level) const {
+void MultiTree<T>::print(MultiTreeNode<T>* current, int level) const {
     for (int i = 0; i < level; i++)
         cout << "   ";
-    cout << current->content;
+   // cout << current->content;
+    current-> print();
+    cout << endl;
     for (auto it = current->responses.begin(); it != current->responses.end(); it++)
         print(*it, level + 1);
 }
+
+
 #endif  // MULTITREE_H

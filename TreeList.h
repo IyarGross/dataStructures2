@@ -8,7 +8,7 @@
 template <typename T>
 class TreeList {
 private:
-    std::list<MultiTree<T> *> trees;
+    std::list<MultiTree<T>*> trees;
 
 public:
     TreeList();  // Constructor
@@ -24,39 +24,66 @@ public:
 // Implementation
 template <typename T>
 TreeList<T>::TreeList() {
-    // TODO: complete
+    trees.push_back(new <MultiTree<T>*>);
 }
 
 template <typename T>
 TreeList<T>::~TreeList() {
-    // TODO: complete
+    if (!trees.empty())
+    {
+        for (auto it = trees.begin(); it != trees.end(); it++)
+            if (*it)
+                delete (*it);
+        trees.clear();
+    }
 }
 
 template <typename T>
 void TreeList<T>::addTree(NodeRecord<T>* rootRecord) {
-    // TODO: complete
+    trees.push_back(new MultiTree<T>(rootRecord));
 }
 
 template <typename T>
 bool TreeList<T>::addRecord(const T& parentKey, NodeRecord<T>* record) {
-    // TODO: complete
+    auto it = search(parentKey);
+    if (!it)
+    {
+        it.addRecord(record);
+        return true;
+    }
     return false;
 }
 
 template<typename T>
 bool TreeList<T>::removeRecord(const T& key) {
-    // TODO: complete
+    auto it = search(key);
+    if (!it)
+    {
+        delete it;
+        return true;
+        
+    }
     return false;
 }
 
 template <typename T>
 void TreeList<T>::printAllTrees() const {
-    // TODO: complete
+    for (auto it = trees.begin(); it != trees.end(); it++)
+    {
+        (*it)->print();
+        cout<< endl;
+    }
 }
-
 template <typename T>
-NodeRecord<T>* TreeList<T>::search(const T& key) const { 
-    // TODO: complete
+NodeRecord<T>* TreeList<T>::search(const T& key) const {
+    
+    for (auto it = trees.begin(); it != trees.end(); it++)
+    {
+        auto it1 = (*it)->searchRecord(key);
+        if (it1 != nullptr)
+            return it1;
+    }
+
     return nullptr;
 }
 

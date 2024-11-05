@@ -1,16 +1,12 @@
 #ifndef NODERECORD_H
 #define NODERECORD_H
 
-
-#include <iostream>
-#include <string>
-
+#include <string>  // Include string
 using namespace std;
-
 template <typename T>
 class NodeRecord {
-
 public:
+    
     virtual ~NodeRecord() = default;
 
     // Returns the key of the record (in this case, name)
