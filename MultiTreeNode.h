@@ -70,7 +70,7 @@ std::string MultiTreeNode<T>::getKey() const {
 
 template <typename T>
 void MultiTreeNode<T>::print() const {
-    cout << record->getKey() << endl;
+    cout << record->getKey();
 }
 
 template <typename T>
