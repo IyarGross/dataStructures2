@@ -15,6 +15,11 @@ string File::getType() const {
     return "File";
 }
 
+string File::getContent() const
+{
+    return content;
+}
+
 bool File::canHaveChildren() const {
     return false;
 }

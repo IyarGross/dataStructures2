@@ -70,19 +70,19 @@ NodeRecord<T>* MultiTree<T>::searchRecord(const T& key) {
 template <typename T>
 NodeRecord<T>* MultiTree<T>::searchChild(MultiTreeNode<T>* child, const T& key)
 {
-    if ( child.getRecord() == key)
-        return child.getRecord();
+    if ( child->getRecord()->getKey() == key)
+        return child->getRecord();
     for (auto it = child->getChildren().begin(); it != child->getChildren().end(); it++)
-        searchChild(it, key);
+        return  searchChild(*it, key);
     return nullptr;
 }
 template <typename T>
 MultiTreeNode<T>* MultiTree<T>::searchParent(MultiTreeNode<T>* child, const T& key)
 {
-    if (child.getRecord() == key)
+    if (child->getRecord()->getKey() == key)
         return child;
     for (auto it = child->getChildren().begin(); it != child->getChildren().end(); it++)
-        searchParent(it, key);
+      return  searchParent(*it, key);
     return nullptr;
 }
 template <typename T>
