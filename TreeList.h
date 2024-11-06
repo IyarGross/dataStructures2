@@ -24,7 +24,7 @@ public:
 // Implementation
 template <typename T>
 TreeList<T>::TreeList() {
-    trees.push_back(new <MultiTree<T>*>);
+    
 }
 
 template <typename T>
@@ -45,13 +45,18 @@ void TreeList<T>::addTree(NodeRecord<T>* rootRecord) {
 
 template <typename T>
 bool TreeList<T>::addRecord(const T& parentKey, NodeRecord<T>* record) {
-    auto it = search(parentKey);
+    bool flage;
+    for (auto it = trees.begin(); it != trees.end() && !flage; it++)
+
+        flage = (*it)->addRecord(parentKey,record);
+    return flage;
+  /*  auto it = search(parentKey);
     if (!it)
     {
         it.addRecord(record);
-        return true;
+        eturn true;
     }
-    return false;
+    return false;*/
 }
 
 template<typename T>
