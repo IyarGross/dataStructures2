@@ -101,7 +101,10 @@ void MultiTree<T>::print(MultiTreeNode<T>* current, int level) const {
  //   cout << endl;
  //   for (auto it = current->responses.begin(); it != current->responses.end(); it++)
     for (auto it = current->getChildren().begin(); it != current->getChildren().end(); it++)
+    {
+        cout << endl;
         print(*it, level + 1);
+    }
 }
 
 
